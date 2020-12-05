@@ -792,7 +792,7 @@ if INSERT_REP:
         D0 = d0
         global D1
         D1 = d1
-        print(insert_reps(fixed_comb = comb, sim_all = True))   
+        print(insert_reps(fixed_comb = comb, sim_all = True)[0])   
 elif DO_REBUFFER:
     min_td, best_D0, best_D1 = rebuffer()
     min_td *= 1e12
