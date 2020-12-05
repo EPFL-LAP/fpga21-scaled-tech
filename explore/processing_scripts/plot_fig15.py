@@ -53,4 +53,4 @@ plt.ylabel("[ns]")
 plt.ylim(1.1, 2.3)
 
 plt.legend()
-plt.savefig("fig_15_max_seed.pdf")
+plt.savefig("fig_15_avg.pdf")
