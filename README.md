@@ -1,4 +1,4 @@
-# fpga21-scaled-tech
+# Global is the New Local: FPGA Architecture at 5nm and Beyond
 
 This repository holds the source code used to produce the results of the paper entitled "Global is the New Local: FPGA Architecture at 5nm and Beyond".
 
@@ -11,6 +11,8 @@ of parallel threads to be used for SPICE simulations, and for the remaining expe
 For running the Python scripts, Python 2.7 is required.
 
 ## Code Organization and Result Reproduction
+
+All scripts should be run from the directory of their source file.  
 
 The source code is structured as follows:  
 
@@ -57,4 +59,38 @@ For the most part, they should be documented in the code itself, but please note
 
 ### Running the Main Experiments
 
+Scripts for running the main experiments are contained in [explore/](https://github.com/EPFL-LAP/fpga21-scaled-tech/tree/master/explore/).
 
+#### Obtaining the Minimum Grid Sizes
+
+The minimum FPGA grid sizes are obtained from VPR, by running [grid_sizer/size.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/tree/master/explore/grid_sizer/size.py).  
+
+The obtained results should be included in [conf.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/explore/conf.py) (Those produced at the time of writing the paper are already embedded in the file).
+
+#### Exploring Channel Compositions
+
+To generate and rank the various combinations of wire lengths entering the channel composition, run [runner_scripts/run_magic.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/explore/runner_scripts/run_magic.py), without arguments.
+
+#### Running All VPR Eperiments
+
+To generate all architectures for channel compositions in the order provided in the previous step and run implementation of all circuits on them, run [loop_cruncher.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/explore/runner_scripts/loop_cruncher.py), without arguments, and still in the [runner_scripts/](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/explore/runner_scripts/) directory.  
+
+By default, for each technology node, the process will stop once 3 different compositions that manage to successfully place and route all circuits for all cluster sizes are found. This can be changed by changing the parameter `num` on line 13 of the script.  
+
+VPR switches are included in [run_vpr.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/explore/runner_scripts/run_vpr.py), whereas the placement seeds are contained in [explore/conf.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/explore/conf.py), where they may be changed.  
+
+Finally, the benchmark circuits are contained in [benchmarks/](https://github.com/EPFL-LAP/fpga21-scaled-tech/tree/master/explore/runner_scripts/benchmarks).
+
+#### Collecting the Results
+
+Once the VPR experiments complete, navigate to [explore/processing_scripts/](https://github.com/EPFL-LAP/fpga21-scaled-tech/tree/master/explore/processing_scripts/) and run [collect.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/explore/processing_scripts/collect.py) without arguments.
+If the number of channel compositions explored in the final experiments is changed from the default 3 (see the previous section), parameter `wire_no` on line 64 of the script needs to be changed accordingly.
+
+#### Plotting the Results
+
+For plotting the results, paste the dictionary output to the screen by [collect.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/explore/processing_scripts/collect.py) into [plot_fig15.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/explore/processing_scripts/plot_fig15.py) as `res_dict`. The dictionary obtained for the final version of the paper is already embedded in the script.
+
+#### A Note on Runtime
+
+On an Intel(R) Xeon(R) CPU E5-2680 v3-based server, running at 2.50GHz, with 256 GB of RAM, the main experiments take about 18 h to complete, with the default settings embedded in the scripts. The operating system used at the time of running the experiments was CentOS 8 (centos-release-8.2-2.2004.0.2.el8.x86_64).
+All this should not have any influence on the results, but may be useful for assessing the time needed for rerunning the experiments or extending them.
