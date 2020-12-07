@@ -94,3 +94,7 @@ For plotting the results, paste the dictionary output to the screen by [collect.
 
 On an Intel(R) Xeon(R) CPU E5-2680 v3-based server, running at 2.50GHz, with 256 GB of RAM, the main experiments take about 18 h to complete, with the default settings embedded in the scripts. The operating system used at the time of running the experiments was CentOS 8 (centos-release-8.2-2.2004.0.2.el8.x86_64).
 All this should not have any influence on the results, but may be useful for assessing the time needed for rerunning the experiments or extending them.
+
+## Contact
+
+If you find any bugs please open an issue. For all other questions, including getting access to the development branch, please contact Stefan Nikolic (firstname dot lastname at epfl dot ch).
