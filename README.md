@@ -1,5 +1,10 @@
 # Global is the New Local: FPGA Architecture at 5nm and Beyond
 
+
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4309976.svg)](https://doi.org/10.5281/zenodo.4309976)
+
+
 This repository holds the source code used to produce the results of the paper entitled "Global is the New Local: FPGA Architecture at 5nm and Beyond".
 
 ## Prerequisites
