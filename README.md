@@ -13,7 +13,11 @@ In order to reproduce the main results, Synopsys HSPICE (version 2013.12 was use
 The corresponding commands are specified in [setenv.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/edit/master/setenv.py). The same file contains two variables specifying the number
 of parallel threads to be used for SPICE simulations, and for the remaining experiments (mainly VPR).  
 
-For running the Python scripts, Python 2.7 is required.
+For running the Python scripts, Python 2.7 is required, along with the networkx package. Matplotlib is used for graph plotting.
+
+### Additional
+
+Because the routing-resource graphs can consume a lot of space, the scripts compress them using lz4 by default.
 
 ## Code Organization and Result Reproduction
 
@@ -43,7 +47,7 @@ The obtained scaled LUT and FF delays should be included in [tech.py](https://gi
 
 The script for generating the SPICE netlists and measuring the delay of feedback intracluster wires (from the output of one LUT to inputs of other LUTs in the same cluster) and the delay of distributing an intercluster signal from the global wires to the LUT inputs is contained in [wire_delays/local_wires.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/wire_delays/local_wires.py). It provides various options, like repeater insertion and layer planning, described in the docstrings of the file.  
 
-The same directory also contains a script that models global wire delay in a simplified manner, so as to appropriately size the drivers and determine tha maximum logical lengths of wires in a given technology and with a given cluster size ([global_wires.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/wire_delays/global_wires.py)]).  
+The same directory also contains a script that models global wire delay in a simplified manner, so as to appropriately size the drivers and determine the maximum logical lengths of wires in a given technology and with a given cluster size ([global_wires.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/wire_delays/global_wires.py)]).  
 
 Besides the delay modeling scripts, the directory also contains the scripts to generate the required numbers and plot the figures representing feedback delays in various settings, as used in the paper. To generate the data, run [get_figure_data.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/wire_delays/get_figure_data.py), without any arguments, which will produce additional Python files, containing the data, tagged with appropriate labels for plotting.  
 
@@ -76,7 +80,7 @@ The obtained results should be included in [conf.py](https://github.com/EPFL-LAP
 
 To generate and rank the various combinations of wire lengths entering the channel composition, run [runner_scripts/run_magic.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/explore/runner_scripts/run_magic.py), without arguments.
 
-#### Running All VPR Eperiments
+#### Running All VPR Experiments
 
 To generate all architectures for channel compositions in the order provided in the previous step and run implementation of all circuits on them, run [loop_cruncher.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/explore/runner_scripts/loop_cruncher.py), without arguments, and still in the [runner_scripts/](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/explore/runner_scripts/) directory.  
 
@@ -100,6 +104,17 @@ For plotting the results, paste the dictionary output to the screen by [collect.
 On an Intel(R) Xeon(R) CPU E5-2680 v3-based server, running at 2.50GHz, with 256 GB of RAM, the main experiments take about 18 h to complete, with the default settings embedded in the scripts. The operating system used at the time of running the experiments was CentOS 8 (centos-release-8.2-2.2004.0.2.el8.x86_64).
 All this should not have any influence on the results, but may be useful for assessing the time needed for rerunning the experiments or extending them.
 
+#### Troubleshooting
+
+* Depending on the version of HSPICE (and possibly other specificities of the system used for running the experiments), the measured delays may differ slightly.
+  This could in turn trigger an exception with a message "Negative time!" in some simulations. Other than changing the appropriate buffer size slightly, increasing the source pulse width from 4 ns to 5 ns has been successfully used to resolve this.
+
+* The timeout set on line 60 of [run_magic.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/explore/runner_scripts/run_magic.py) was determined to be appropriate for the setup described here. If the ".sort" files, listing the channel compositions for each technology, ranked by performance (see the paper for the details) contain very few or no architectures, this may be an indicator that the timeout is too small for the current setup. Increasing it should enable more architectures to be assessed successfully.
+
 ## Contact
 
 If you find any bugs please open an issue. For all other questions, including getting access to the development branch, please contact Stefan Nikolic (firstname dot lastname at epfl dot ch).
+
+## Acknowledgments
+
+We would like to thank Satwant Singh whose help during the artifact evaluation process for FPGA'21 resulted in eliminating several bugs and finding several solutions that made result reproduction easier.

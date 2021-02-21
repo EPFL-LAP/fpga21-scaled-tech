@@ -110,7 +110,7 @@ orig_Cw = Cw
 Rw = base_tile_height / 1000.0 * MyR
 orig_Rw = Rw
 
-ptm_path = "\"/home/snikolic/FPGA21/ptm/%dnm.l\" %dNM_FINFET_HP\n"
+ptm_path = "\"../spice_models/%dnm.l\" %dNM_FINFET_HP\n"
 
 ##########################################################################
 def update_rc(rep_no, D0, D1, WL):

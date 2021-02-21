@@ -57,7 +57,7 @@ for T in techs:
     #Run VPR:
     log_dir = arc_dir[:-1] + "_logs/"
     os.system("python clean_failed.py --log_dir %s --watch 1 &" % log_dir)
-    os.system("python -u run_benchmarks.py --timeout 180 --is_magic 1 --arc %s --circ \"%s\" --log_dir %s" % (arc_dir, circs, log_dir))
+    os.system("python -u run_benchmarks.py --timeout 180 --is_magic 1 --arc %s --circs \"%s\" --log_dir %s" % (arc_dir, circs, log_dir))
 
     #Sort the architectures:
     wd = os.getcwd() + '/'

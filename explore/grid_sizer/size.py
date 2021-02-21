@@ -16,7 +16,7 @@ sys.path.insert(0,'../../')
 
 import setenv
 
-circ_dir = os.path.abspath("../benchmarks/")
+circ_dir = os.path.abspath("../runner_scripts/benchmarks/")
 Ns = [2, 4, 8, 16]
 arc_filename = "k6_N%d_40nm.xml"
 
