@@ -111,6 +111,17 @@ All this should not have any influence on the results, but may be useful for ass
 
 * The timeout set on line 60 of [run_magic.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/explore/runner_scripts/run_magic.py) was determined to be appropriate for the setup described here. If the ".sort" files, listing the channel compositions for each technology, ranked by performance (see the paper for the details) contain very few or no architectures, this may be an indicator that the timeout is too small for the current setup. Increasing it should enable more architectures to be assessed successfully.
 
+#### Intermediate Files
+
+Final architecture files that came out of the exploration presented in the paper are available in [final_arcs.zip](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/final_arcs.zip). Only the smallest generated grids are provided, but the [arc_gen.py](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/generate_architecture/arc_gen.py) script can change the grid size without rerunning the HSPICE simulations. The easiest way to achieve this would be to navigate to [generate_architecture/](https://github.com/EPFL-LAP/fpga21-scaled-tech/blob/master/generate_architecture/) and call the script with the `change_grid_dimensions` parameter pointing to the architecture to be resized and other files passed as arguments accordingly. For example, a resizing call could look as follows:
+
+
+`python arc_gen.py --K 6 --N 4 --wire_file ../final_arcs/N4_T4/T4_W15.wire --grid_w 30 --grid_h 30 --density 0.5 --tech 4 --arc_name arc_W30_H30.xml --change_grid_dimensions ../final_arcs/N4_T4/arc_T4_N4_W15_W16_H16.xml --physical_square 1 --import_padding ../final_arcs/N8_T4/arc_T4_N8_W15_W12_H12_padding.log`
+
+Note that the padding log, containing the information about the number LEN-1 wires added to the channels should point to the file corresponding to the N=8 architecture, as this is the starting point for channel scaling (more details in the paper).
+
+In case you wish to skip RR-graph compression, set `COMPRESS_RR` on line 286 of the script to False.
+
 ## Contact
 
 If you find any bugs please open an issue. For all other questions, including getting access to the development branch, please contact Stefan Nikolic (firstname dot lastname at epfl dot ch).
